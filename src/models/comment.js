@@ -6,21 +6,18 @@ const schema = new mongoose.Schema({
 		type: String,
 		default: shortid.generate
 	},
+	user: String,
+	post: {
+		type: String,
+		index: true
+	},
+	body: String,
 	created: {
 		type: Date,
 		default: Date.now
-	},
-	token: {
-		type: String,
-		select: false
-	},
-	device: {
-		type: mongoose.Schema.Types.Mixed,
-		default: {},
-		select: false
 	}
 })
 
-const model = mongoose.model('User', schema)
+const model = mongoose.model('Comment', schema)
 
 export default model
