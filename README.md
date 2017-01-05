@@ -1,2 +1,3 @@
-# boar-api
-Boar API
+# Boar
+
+Be angry
