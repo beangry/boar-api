@@ -14,6 +14,7 @@ router.post('/', auth.user, (req, res, next) => {
 	post.user = req.user._id
 	post.tag = req.body.post.tag
 	post.body = req.body.post.body
+	posts.hearts = [req.user._id]
 
 	post.save((err, post) => {
 		if (err) {
@@ -21,7 +22,9 @@ router.post('/', auth.user, (req, res, next) => {
 		}
 
 		res.send({
-			post: post
+			post: post.toJSON({
+				user: req.user._id
+			})
 		})
 	})
 })
@@ -104,7 +107,9 @@ router.post('/:id/heart', auth.user, (req, res, next) => {
 				}
 
 				res.send({
-					post: post
+					post: post.toJSON({
+						user: req.user._id
+					})
 				})
 			})
 		})
