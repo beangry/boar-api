@@ -1,6 +1,8 @@
 import express from 'express'
 
 import Comment from '../models/comment'
+import Post from '../models/post'
+import User from '../models/user'
 
 import auth from '../core/auth'
 
@@ -21,6 +23,12 @@ router.post('/', auth.user, (req, res, next) => {
 		res.send({
 			comment: comment
 		})
+
+		Post.getUser(comment.post)
+			.then(user => User.notify(user, 'comment', {
+				route: 'post',
+				id: comment.post
+			}))
 	})
 })
 
