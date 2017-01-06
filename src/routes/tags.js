@@ -3,12 +3,14 @@ import express from 'express'
 import Tag from '../models/tag'
 
 import auth from '../core/auth'
+import slug from '../core/slug'
 
 const router = express.Router()
 
 router.post('/', auth.admin, (req, res, next) => {
 	let tag = new Tag()
 
+	tag._id = slug(req.body.tag.name)
 	tag.name = req.body.tag.name
 	tag.type = req.body.tag.type
 	tag.description = req.body.tag.description
