@@ -19,6 +19,24 @@ const schema = new mongoose.Schema({
 	}
 })
 
+schema.statics.getUser = function(id) {
+	return new Promise((resolve, reject) => {
+		this.findById(id)
+			.select('user')
+			.exec((err, post) => {
+				if (err) {
+					return reject(err)
+				}
+
+				if (!post) {
+					return reject()
+				}
+
+				resolve(post.user)
+			})
+	})
+}
+
 schema.set('toJSON', {
 	transform(doc, ret, options) {
 		ret.hearts = doc.hearts.length
