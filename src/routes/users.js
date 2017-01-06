@@ -24,6 +24,16 @@ router.post('/', (req, res, next) => {
 	})
 })
 
+router.get('/:id', auth.user, (req, res, next) => {
+	if (req.user._id === req.params.id) {
+		res.send({
+			user: req.user
+		})
+	} else {
+		next()
+	}
+})
+
 router.put('/:id', auth.user, (req, res, next) => {
 	if (req.body.user.device) {
 		req.user.device = req.body.user.device
