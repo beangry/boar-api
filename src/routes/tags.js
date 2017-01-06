@@ -39,6 +39,19 @@ router.get('/', auth.user, (req, res, next) => {
 		})
 })
 
+router.get('/:id', auth.user, (req, res, next) => {
+	Tag.findById(req.params.id)
+		.exec((err, tag) => {
+			if (err) {
+				return next(err)
+			}
+
+			res.send({
+				tag: tag
+			})
+		})
+})
+
 router.put('/:id', auth.admin, (req, res, next) => {
 	Tag.findByIdAndUpdate(req.params.id, req.body.tag, {
 		new: true
