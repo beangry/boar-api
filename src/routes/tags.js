@@ -6,20 +6,6 @@ import auth from '../core/auth'
 
 const router = express.Router()
 
-router.get('/', auth.user, (req, res, next) => {
-	Tag.find()
-		.sort('order')
-		.exec((err, tags) => {
-			if (err) {
-				return next(err)
-			}
-
-			res.send({
-				tags: tags
-			})
-		})
-})
-
 router.post('/', auth.admin, (req, res, next) => {
 	let tag = new Tag()
 
@@ -37,6 +23,20 @@ router.post('/', auth.admin, (req, res, next) => {
 			tag: tag
 		})
 	})
+})
+
+router.get('/', auth.user, (req, res, next) => {
+	Tag.find()
+		.sort('order')
+		.exec((err, tags) => {
+			if (err) {
+				return next(err)
+			}
+
+			res.send({
+				tags: tags
+			})
+		})
 })
 
 router.put('/:id', auth.admin, (req, res, next) => {
