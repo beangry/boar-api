@@ -8,7 +8,14 @@ const schema = new mongoose.Schema({
 	},
 	user: String,
 	action: String,
-	target: String,
+	target: {
+		type: mongoose.Schema.Types.Mixed,
+		default: {}
+	},
+	read: {
+		type: Boolean,
+		default: false
+	},
 	created: {
 		type: Date,
 		default: Date.now
