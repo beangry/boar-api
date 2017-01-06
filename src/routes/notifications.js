@@ -21,4 +21,23 @@ router.get('/', auth.user, (req, res, next) => {
 		})
 })
 
+router.put('/:id', auth.user, (req, res, next) => {
+	Notification.findOneAndUpdate({
+		_id: req.params.id,
+		user: req.user._id
+	}, {
+		read: req.body.notification.read
+	}, {
+		new: true
+	}, (err, notification) => {
+		if (err) {
+			return next(err)
+		}
+
+		res.send({
+			notification: notification
+		})
+	})
+})
+
 export default router
