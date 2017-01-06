@@ -14,7 +14,7 @@ router.post('/', auth.user, (req, res, next) => {
 	post.user = req.user._id
 	post.tag = req.body.post.tag
 	post.body = req.body.post.body
-	posts.hearts = [req.user._id]
+	post.hearts = [req.user._id]
 
 	post.save((err, post) => {
 		if (err) {
