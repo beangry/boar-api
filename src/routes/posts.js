@@ -61,6 +61,10 @@ router.get('/:id', auth.user, (req, res, next) => {
 				return next(err)
 			}
 
+			if (!post) {
+				return next()
+			}
+
 			res.send({
 				post: post.toJSON({
 					user: req.user._id
