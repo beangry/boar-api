@@ -37,11 +37,11 @@ router.get('/', auth.user, (req, res, next) => {
 	}
 
 	if (req.query.after) {
-		query.where('created').gt(req.query.timestamp || Date.now())
+		query.where('created').gt(req.query.after || Date.now())
 	}
 
 	if (req.query.before) {
-		query.where('created').lt(req.query.timestamp || Date.now())
+		query.where('created').lt(req.query.before || Date.now())
 	}
 
 	let limit = parseInt(process.env.ITEMS_PER_PAGE)
