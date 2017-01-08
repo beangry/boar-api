@@ -15,7 +15,8 @@ const schema = new mongoose.Schema({
 	hearts: [String],
 	created: {
 		type: Date,
-		default: Date.now
+		default: Date.now,
+		index: true
 	}
 })
 

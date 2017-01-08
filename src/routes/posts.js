@@ -33,14 +33,22 @@ router.get('/', auth.user, (req, res, next) => {
 	let query = Post.find()
 
 	if (req.query.tag) {
-		query
-			.where('tag').eq(req.query.tag)
+		query.where('tag').eq(req.query.tag)
 	}
+
+	if (req.query.after) {
+		query.where('created').gt(req.query.timestamp || Date.now())
+	}
+
+	if (req.query.before) {
+		query.where('created').lt(req.query.timestamp || Date.now())
+	}
+
+	let limit = parseInt(process.env.ITEMS_PER_PAGE)
 
 	query
 		.sort('-created')
-		.skip(req.query.skip || 0)
-		.limit(parseInt(process.env.ITEMS_PER_PAGE))
+		.limit(limit)
 		.exec((err, posts) => {
 			if (err) {
 				return next(err)
