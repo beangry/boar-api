@@ -30,36 +30,44 @@ router.post('/', auth.user, (req, res, next) => {
 })
 
 router.get('/', auth.user, (req, res, next) => {
+	const LIMIT = parseInt(process.env.ITEMS_PER_PAGE)
+
+	let count = Post.count()
 	let query = Post.find()
 
 	if (req.query.tag) {
+		count.where('tag').eq(req.query.tag)
 		query.where('tag').eq(req.query.tag)
 	}
 
 	if (req.query.after) {
-		query.where('created').gt(req.query.after || Date.now())
+		query.where('created').gt(req.query.after)
 	}
 
 	if (req.query.before) {
-		query.where('created').lt(req.query.before || Date.now())
+		query.where('created').lt(req.query.before)
 	}
-
-	let limit = parseInt(process.env.ITEMS_PER_PAGE)
 
 	query
 		.sort('-created')
-		.limit(limit)
-		.exec((err, posts) => {
-			if (err) {
-				return next(err)
-			}
+		.limit(LIMIT)
 
+	let total = 0
+
+	count
+		.then(count => total = count)
+		.then(() => query)
+		.then(posts => {
 			res.send({
 				posts: posts.map(post => post.toJSON({
 					user: req.user._id
-				}))
+				})),
+				meta: {
+					total: Math.ceil(total / LIMIT)
+				}
 			})
 		})
+		.catch(err => next(err))
 })
 
 router.get('/:id', auth.user, (req, res, next) => {
