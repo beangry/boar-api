@@ -25,10 +25,7 @@ router.post('/', auth.user, (req, res, next) => {
 		})
 
 		Post.getUser(comment.post)
-			.then(user => User.notify(user, 'comment', {
-				route: 'post',
-				id: comment.post
-			}))
+			.then(user => User.notify(user, 'comment', comment.post))
 	})
 })
 

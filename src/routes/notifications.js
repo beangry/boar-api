@@ -9,7 +9,7 @@ const router = express.Router()
 router.get('/', auth.user, (req, res, next) => {
 	Notification.find()
 		.where('user').eq(req.user._id)
-		.sort('-created')
+		.sort('-updated')
 		.exec((err, notifications) => {
 			if (err) {
 				return next(err)

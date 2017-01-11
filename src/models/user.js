@@ -24,19 +24,10 @@ const schema = new mongoose.Schema({
 })
 
 schema.statics.notify = function(user, action, target) {
-	let notification = new Notification()
-
-	notification.user = user
-	notification.action = action
-	notification.target = target
-
-	notification.save(err => {
-		if (err) {
-			return console.error('notify', err)
-		}
-
-		// push
-	})
+	Notification.add(user, action, target)
+		.then(notification => {
+			// push
+		})
 }
 
 const model = mongoose.model('User', schema)
