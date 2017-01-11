@@ -25,7 +25,7 @@ router.post('/', auth.user, (req, res, next) => {
 		})
 
 		Post.getUser(comment.post)
-			.then(user => User.notify(user, 'comment', comment.post))
+			.then(user => !req.user._id.equals(user) && User.notify(user, 'comment', comment.post))
 	})
 })
 
