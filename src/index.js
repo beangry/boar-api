@@ -10,7 +10,7 @@ import mongoose from 'mongoose'
 
 mongoose.Promise = Promise
 
-mongoose.connect(process.env.MONGODB_URL, err => {
+mongoose.connect(process.env.MONGODB_URI, err => {
 	if (err) throw err
 })
 
