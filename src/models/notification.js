@@ -31,6 +31,7 @@ schema.statics.add = function(user, action, target) {
 			action: action,
 			target: target
 		}, {
+			read: false,
 			updated: Date.now()
 		}, {
 			new: true,
