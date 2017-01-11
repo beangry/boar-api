@@ -1,14 +1,9 @@
 import mongoose from 'mongoose'
-import shortid from 'shortid'
 
 const schema = new mongoose.Schema({
-	_id: {
-		type: String,
-		default: shortid.generate
-	},
-	user: String,
+	user: mongoose.Schema.Types.ObjectId,
 	post: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		index: true
 	},
 	body: String,

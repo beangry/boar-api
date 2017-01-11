@@ -25,7 +25,7 @@ router.post('/', (req, res, next) => {
 })
 
 router.get('/:id', auth.user, (req, res, next) => {
-	if (req.user._id === req.params.id) {
+	if (req.user._id.equals(req.params.id)) {
 		res.send({
 			user: req.user
 		})

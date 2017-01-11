@@ -6,10 +6,7 @@ const schema = new mongoose.Schema({
 		type: String,
 		default: shortid.generate
 	},
-	name: {
-		type: String,
-		index: true
-	},
+	name: String,
 	type: String,
 	description: String,
 	order: {
@@ -21,7 +18,7 @@ const schema = new mongoose.Schema({
 schema.set('toJSON', {
 	transform(doc, ret) {
 		ret.links = {
-			posts: `/v1/posts?tag=${doc.name}`
+			posts: `/v1/posts?tag=${doc._id}`
 		}
 	}
 })
