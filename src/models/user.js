@@ -1,5 +1,8 @@
 import mongoose from 'mongoose'
+
 import Notification from './notification'
+
+import push from '../core/push'
 
 const schema = new mongoose.Schema({
 	created: {
@@ -20,7 +23,15 @@ const schema = new mongoose.Schema({
 schema.statics.notify = function(user, action, target) {
 	Notification.add(user, action, target)
 		.then(notification => {
-			// push
+			this.findById(user)
+				.select('device')
+				.exec((err, user) => {
+					if (err || !user) {
+						return console.error('User.notify', err || 'user not found')
+					}
+
+					push(user.device, notification)
+				})
 		})
 }
 
