@@ -22,7 +22,8 @@ const push = (device, notification) => {
 		uri: 'https://fcm.googleapis.com/fcm/send',
 		body: {
 			notification: {
-				body: body
+				body: body,
+				click_action: 'FCM_PLUGIN_ACTIVITY'
 			},
 			data: {
 				action: notification.action,
