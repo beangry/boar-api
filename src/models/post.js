@@ -7,7 +7,12 @@ const schema = new mongoose.Schema({
 		index: true
 	},
 	body: String,
-	hearts: [mongoose.Schema.Types.ObjectId],
+	hearted: [mongoose.Schema.Types.ObjectId],
+	hearts: {
+		type: Number,
+		default: 1,
+		index: true
+	},
 	created: {
 		type: Date,
 		default: Date.now,
@@ -35,10 +40,10 @@ schema.statics.getUser = function(id) {
 
 schema.set('toJSON', {
 	transform(doc, ret, options) {
-		ret.hearts = doc.hearts.length
+		delete ret.hearted
 
 		if (options.user) {
-			ret.liked = doc.hearts.indexOf(options.user) >= 0
+			ret.liked = doc.hearted.indexOf(options.user) >= 0
 		}
 
 		ret.links = {

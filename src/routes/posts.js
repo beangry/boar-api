@@ -1,4 +1,5 @@
 import express from 'express'
+import moment from 'moment'
 
 import Post from '../models/post'
 import Comment from '../models/comment'
@@ -14,7 +15,7 @@ router.post('/', auth.user, (req, res, next) => {
 	post.user = req.user._id
 	post.tag = req.body.post.tag
 	post.body = req.body.post.body
-	post.hearts = [req.user._id]
+	post.hearted = [req.user._id]
 
 	post.save((err, post) => {
 		if (err) {
@@ -38,6 +39,12 @@ router.get('/', auth.user, (req, res, next) => {
 	if (req.query.tag) {
 		count.where('tag').eq(req.query.tag)
 		query.where('tag').eq(req.query.tag)
+	} else if (req.query.type === 'popular') {
+		let time = moment().subtract(24, 'hours').toDate()
+
+		count.where('created').gte(time)
+		query.where('created').gte(time)
+			.sort('-hearts')
 	}
 
 	if (req.query.after) {
@@ -111,15 +118,17 @@ router.post('/:id/heart', auth.user, (req, res, next) => {
 				return next(err)
 			}
 
-			let index = post.hearts.indexOf(req.user._id)
+			let index = post.hearted.indexOf(req.user._id)
 
 			if (index >= 0) {
-				post.hearts.splice(index, 1)
+				post.hearted.splice(index, 1)
+				post.hearts--
 			} else {
-				post.hearts.push(req.user._id)
+				post.hearted.push(req.user._id)
+				post.hearts++
 			}
 
-			post.markModified('hearts')
+			post.markModified('hearted')
 
 			post.save((err, post) => {
 				if (err) {
