@@ -15,6 +15,7 @@ const user = (req, res, next) => {
 	if (req.headers.token) {
 		User.findOne()
 			.where('token').eq(req.headers.token)
+			.select('+device')
 			.exec((err, user) => {
 				if (err || !user) {
 					err = new Error('Invalid authentication token')
