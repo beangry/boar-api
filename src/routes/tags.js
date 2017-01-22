@@ -13,7 +13,6 @@ router.post('/', auth.admin, (req, res, next) => {
 	tag._id = slug(req.body.tag.name)
 	tag.name = req.body.tag.name
 	tag.type = req.body.tag.type
-	tag.description = req.body.tag.description
 	tag.order = req.body.tag.order
 
 	tag.save((err, tag) => {
