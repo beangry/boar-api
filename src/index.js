@@ -22,6 +22,8 @@ app.use(bodyParser.json())
 
 import routes from './routes/index'
 import comments from './routes/comments'
+import conversations from './routes/conversations'
+import messages from './routes/messages'
 import notifications from './routes/notifications'
 import posts from './routes/posts'
 import tags from './routes/tags'
@@ -29,6 +31,8 @@ import users from './routes/users'
 
 app.use('/', routes)
 app.use('/v1/comments', comments)
+app.use('/v1/conversations', conversations)
+app.use('/v1/messages', messages)
 app.use('/v1/notifications', notifications)
 app.use('/v1/posts', posts)
 app.use('/v1/tags', tags)
