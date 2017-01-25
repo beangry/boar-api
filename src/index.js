@@ -21,18 +21,18 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 
 import routes from './routes/index'
-import users from './routes/users'
-import posts from './routes/posts'
 import comments from './routes/comments'
-import tags from './routes/tags'
 import notifications from './routes/notifications'
+import posts from './routes/posts'
+import tags from './routes/tags'
+import users from './routes/users'
 
 app.use('/', routes)
-app.use('/v1/users', users)
-app.use('/v1/posts', posts)
 app.use('/v1/comments', comments)
-app.use('/v1/tags', tags)
 app.use('/v1/notifications', notifications)
+app.use('/v1/posts', posts)
+app.use('/v1/tags', tags)
+app.use('/v1/users', users)
 
 app.use((req, res, next) => {
 	let err = new Error('Not found')
