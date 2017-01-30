@@ -27,6 +27,7 @@ import comments from './routes/comments'
 import notifications from './routes/notifications'
 import posts from './routes/posts'
 import reports from './routes/reports'
+import suggestions from './routes/suggestions'
 import tags from './routes/tags'
 import users from './routes/users'
 
@@ -35,6 +36,7 @@ app.use('/v1/comments', comments)
 app.use('/v1/notifications', notifications)
 app.use('/v1/posts', posts)
 app.use('/v1/reports', reports)
+app.use('/v1/suggestions', suggestions)
 app.use('/v1/tags', tags)
 app.use('/v1/users', users)
 
