@@ -1,6 +1,6 @@
 import express from 'express'
 
-import Report from '../models/comment'
+import Report from '../models/report'
 
 import auth from '../core/auth'
 import json from '../core/json'
