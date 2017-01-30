@@ -36,6 +36,9 @@ router.get('/', auth.user, (req, res, next) => {
 	let count = Post.count()
 	let query = Post.find()
 
+	count.where('_id').nin(req.user.reported)
+	query.where('_id').nin(req.user.reported)
+
 	if (req.query.tag) {
 		count.where('tag').eq(req.query.tag)
 		query.where('tag').eq(req.query.tag)
@@ -85,6 +88,10 @@ router.get('/:id', auth.user, (req, res, next) => {
 			}
 
 			if (!post) {
+				return next()
+			}
+
+			if (req.user.reported.indexOf(post._id) >= 0) {
 				return next()
 			}
 
