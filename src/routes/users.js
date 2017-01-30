@@ -35,9 +35,8 @@ router.get('/:id', auth.user, (req, res, next) => {
 })
 
 router.put('/:id', auth.user, (req, res, next) => {
-	if (req.body.user.device) {
-		req.user.device = req.body.user.device
-	}
+	req.user.notifications = req.body.user.notifications
+	req.user.device = req.body.user.device
 
 	if (req.user.isModified()) {
 		req.user.save((err, user) => {

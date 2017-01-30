@@ -6,6 +6,10 @@ import push from '../core/push'
 
 const schema = new mongoose.Schema({
 	reported: [mongoose.Schema.Types.ObjectId],
+	notifications: {
+		type: Boolean,
+		default: true
+	},
 	created: {
 		type: Date,
 		default: Date.now
@@ -25,13 +29,15 @@ schema.statics.notify = function(user, action, target) {
 	Notification.add(user, action, target)
 		.then(notification => {
 			this.findById(user)
-				.select('device')
+				.select('notifications device')
 				.exec((err, user) => {
 					if (err || !user) {
 						return console.error('User.notify', err || 'user not found')
 					}
 
-					push(user.device, notification)
+					if (user.notifications) {
+						push(user.device, notification)
+					}
 				})
 		})
 }
