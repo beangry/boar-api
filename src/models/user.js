@@ -5,6 +5,7 @@ import Notification from './notification'
 import push from '../core/push'
 
 const schema = new mongoose.Schema({
+	reported: [mongoose.Schema.Types.ObjectId],
 	created: {
 		type: Date,
 		default: Date.now
