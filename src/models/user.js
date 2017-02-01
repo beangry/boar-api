@@ -16,7 +16,8 @@ const schema = new mongoose.Schema({
 	},
 	token: {
 		type: String,
-		select: false
+		select: false,
+		index: true
 	},
 	device: {
 		type: mongoose.Schema.Types.Mixed,
