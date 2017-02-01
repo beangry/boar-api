@@ -5,6 +5,16 @@ import Notification from './notification'
 import push from '../core/push'
 
 const schema = new mongoose.Schema({
+	email: {
+		type: String,
+		select: false,
+		index: true,
+		unique: true
+	},
+	password: {
+		type: String,
+		select: false
+	},
 	reported: [mongoose.Schema.Types.ObjectId],
 	notifications: {
 		type: Boolean,
@@ -22,6 +32,11 @@ const schema = new mongoose.Schema({
 	device: {
 		type: mongoose.Schema.Types.Mixed,
 		default: {},
+		select: false
+	},
+	role: {
+		type: String,
+		default: 'user',
 		select: false
 	}
 })
@@ -42,6 +57,13 @@ schema.statics.notify = function(user, action, target) {
 				})
 		})
 }
+
+schema.set('toJSON', {
+	transform(doc, ret) {
+		delete ret.password
+		delete ret.role
+	}
+})
 
 const model = mongoose.model('User', schema)
 
