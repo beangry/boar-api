@@ -8,23 +8,30 @@ import json from '../core/json'
 const router = express.Router()
 
 router.post('/', auth.user, (req, res, next) => {
-	let report = new Report()
+	if (req.user.reported.indexOf(req.body.report.post) < 0) {
+		let report = new Report()
 
-	report.user = req.user._id
-	report.post = req.body.report.post
-	report.details = req.body.report.details
+		report.user = req.user._id
+		report.post = req.body.report.post
+		report.details = req.body.report.details
 
-	report.save()
-		.then(report => {
-			json(res, 'report', report)
+		report.save()
+			.then(report => {
+				json(res, 'report', report)
 
-			req.user.reported.push(req.body.report.post)
+				req.user.reported.push(req.body.report.post)
 
-			req.user.markModified('reported')
+				req.user.markModified('reported')
 
-			req.user.save()
-		})
-		.catch(err => next(err))
+				req.user.save()
+			})
+			.catch(err => next(err))
+	} else {
+		let err = new Error('Already reported')
+		err.status = 400
+
+		next(err)
+	}
 })
 
 export default router

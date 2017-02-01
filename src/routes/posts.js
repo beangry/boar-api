@@ -39,6 +39,9 @@ router.get('/', auth.user, (req, res, next) => {
 	count.where('_id').nin(req.user.reported)
 	query.where('_id').nin(req.user.reported)
 
+	count.where('user').nin(req.user.blocked)
+	query.where('user').nin(req.user.blocked)
+
 	if (req.query.tag) {
 		count.where('tag').eq(req.query.tag)
 		query.where('tag').eq(req.query.tag)
