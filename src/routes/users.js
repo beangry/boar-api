@@ -10,7 +10,7 @@ const router = express.Router()
 router.post('/', (req, res, next) => {
 	let user = new User()
 
-	user.token = hash()
+	user.token = hash.token()
 	user.device = req.body.user.device
 
 	user.save((err, user) => {
