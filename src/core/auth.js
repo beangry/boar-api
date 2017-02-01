@@ -1,32 +1,30 @@
 import User from '../models/user'
 
-const admin = (req, res, next) => {
-	if (req.headers.admin === process.env.ADMIN_KEY) {
-		next()
-	} else {
-		let err = new Error()
-		err.status = 403
-
-		next(err)
-	}
-}
-
-const user = (req, res, next) => {
+const auth = (req, res, next, admin) => {
 	if (req.headers.token) {
 		User.findOne()
 			.where('token').eq(req.headers.token)
 			.select('+device')
-			.exec((err, user) => {
-				if (err || !user) {
-					err = new Error('Invalid authentication token')
-					err.status = 403
+			.select('+role')
+			.exec()
+			.then(user => {
+				if (!user) {
+					return next()
+				}
 
-					return next(err)
+				if (admin && user.role !== 'admin') {
+					return next()
 				}
 
 				req.user = user
 
 				next()
+			})
+			.catch(() => {
+				let err = new Error('Invalid authentication token')
+				err.status = 403
+
+				next(err)
 			})
 	} else {
 		let err = new Error('Missing authentication token')
@@ -34,6 +32,14 @@ const user = (req, res, next) => {
 
 		next(err)
 	}
+}
+
+const admin = (req, res, next) => {
+	auth(req, res, next, true)
+}
+
+const user = (req, res, next) => {
+	auth(req, res, next)
 }
 
 export default {
