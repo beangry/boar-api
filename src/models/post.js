@@ -1,7 +1,10 @@
 import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema({
-	user: mongoose.Schema.Types.ObjectId,
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		index: true
+	},
 	tag: {
 		type: String,
 		index: true

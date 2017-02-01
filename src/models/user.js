@@ -15,6 +15,7 @@ const schema = new mongoose.Schema({
 		type: String,
 		select: false
 	},
+	blocked: [mongoose.Schema.Types.ObjectId],
 	reported: [mongoose.Schema.Types.ObjectId],
 	notifications: {
 		type: Boolean,
