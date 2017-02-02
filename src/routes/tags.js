@@ -40,6 +40,31 @@ router.get('/', auth.user, (req, res, next) => {
 		})
 })
 
+router.get('/data', auth.admin, (req, res, next) => {
+	Tag.find()
+		.sort('order')
+		.select('type order')
+		.exec()
+		.then(tags => {
+			let types = []
+			let data = []
+
+			tags.forEach(tag => {
+				if (types.indexOf(tag.type) < 0) {
+					types.push(tag.type)
+
+					data.push({
+						type: tag.type,
+						order: tag.order
+					})
+				}
+			})
+
+			res.send(data)
+		})
+		.catch(err => next(err))
+})
+
 router.get('/:id', auth.user, (req, res, next) => {
 	Tag.findById(req.params.id)
 		.exec((err, tag) => {
