@@ -36,7 +36,7 @@ const push = (device, notification) => {
 		headers: {
 			'Authorization': `key=${process.env.FCM_SERVER_KEY}`
 		}
-	}, err => console.error('push', err))
+	}, err => err && console.error('push', err))
 }
 
 export default push
