@@ -9,6 +9,18 @@ import json from '../core/json'
 
 const router = express.Router()
 
+const sort = (a, b) => {
+	if (a.date > b.date) {
+		return 1
+	}
+
+	if (a.date < b.date) {
+		return -1
+	}
+
+	return 0
+}
+
 router.get('/posts', auth.admin, (req, res, next) => {
 	let criteria = moment().subtract(1, 'month').toDate()
 
@@ -35,7 +47,7 @@ router.get('/posts', auth.admin, (req, res, next) => {
 			return next(err)
 		}
 
-		let posts = data.map((post, index) => {
+		let posts = data.sort(sort).map((post, index) => {
 			let date = moment(post.date).format('l')
 
 			return {
@@ -75,7 +87,7 @@ router.get('/users', auth.admin, (req, res, next) => {
 			return next(err)
 		}
 
-		let users = data.map((user, index) => {
+		let users = data.sort(sort).map((user, index) => {
 			let date = moment(user.date).format('l')
 
 			return {
