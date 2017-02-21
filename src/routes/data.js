@@ -53,7 +53,7 @@ router.get('/posts', auth.admin, (req, res, next) => {
 			return {
 				index,
 				label: date,
-				value: post._id
+				value: post.count
 			}
 		})
 
@@ -93,7 +93,7 @@ router.get('/users', auth.admin, (req, res, next) => {
 			return {
 				index,
 				label: date,
-				value: user._id
+				value: user.count
 			}
 		})
 
