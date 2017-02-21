@@ -35,10 +35,11 @@ router.get('/posts', auth.admin, (req, res, next) => {
 			return next(err)
 		}
 
-		let posts = data.map(post => {
+		let posts = data.map((post, index) => {
 			let date = moment(post.date).format('l')
 
 			return {
+				index,
 				label: date,
 				value: post._id
 			}
@@ -74,10 +75,11 @@ router.get('/users', auth.admin, (req, res, next) => {
 			return next(err)
 		}
 
-		let users = data.map(user => {
+		let users = data.map((user, index) => {
 			let date = moment(user.date).format('l')
 
 			return {
+				index,
 				label: date,
 				value: user._id
 			}
