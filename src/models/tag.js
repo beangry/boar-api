@@ -8,6 +8,7 @@ const schema = new mongoose.Schema({
 	},
 	name: String,
 	type: String,
+	related: [String],
 	order: {
 		type: Number,
 		default: 0
