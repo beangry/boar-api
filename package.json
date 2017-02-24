@@ -9,7 +9,7 @@
     "url": "git+https://github.com/alizahid/boar-api.git"
   },
   "scripts": {
-    "dev": "nodemon -w src --exec \"babel-node src/bin/www\"",
+    "dev": "NODE_ENV=development nodemon -w src --exec \"babel-node src/bin/www\"",
     "build": "babel src -s -D -d app",
     "start": "node app/bin/www",
     "prestart": "npm run -s build"
