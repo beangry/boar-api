@@ -12,6 +12,7 @@ router.post('/', (req, res, next) => {
 
 	user.token = hash.token()
 	user.device = req.body.user.device
+	user.notifications = req.body.user.device && req.body.user.device.token && true || false
 
 	user.save((err, user) => {
 		if (err) {
