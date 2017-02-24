@@ -9,11 +9,17 @@ const auth = (req, res, next, admin) => {
 			.exec()
 			.then(user => {
 				if (!user) {
-					return next()
+					let err = new Error('User not found')
+					err.status = 404
+
+					return next(err)
 				}
 
 				if (admin && user.role !== 'admin') {
-					return next()
+					let err = new Error('Invalid authentication token')
+					err.status = 403
+
+					return next(err)
 				}
 
 				req.user = user
