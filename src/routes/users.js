@@ -55,4 +55,32 @@ router.put('/:id', auth.user, (req, res, next) => {
 	}
 })
 
+router.post('/:id/block', auth.user, (req, res, next) => {
+	if (req.user._id.equals(req.params.id)) {
+		let err = new Error(`You can't block yourself`)
+		err.status = 400
+
+		return next(err)
+	}
+
+	if (req.user.blocked.indexOf(req.params.id) < 0) {
+		req.user.blocked.push(req.params.id)
+
+		req.user.markModified('blocked')
+
+		req.user.save()
+			.then(() => {
+				res.send({
+					message: `This user is now blocked, and you won't be seeing any posts from them again`
+				})
+			})
+			.catch(err => next(err))
+	} else {
+		let err = new Error(`You've already blocked this user`)
+		err.status = 400
+
+		next(err)
+	}
+})
+
 export default router

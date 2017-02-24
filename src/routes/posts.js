@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import Post from '../models/post'
 import Comment from '../models/comment'
+import Report from '../models/report'
 import User from '../models/user'
 
 import auth from '../core/auth'
@@ -36,11 +37,14 @@ router.get('/', auth.user, (req, res, next) => {
 	let count = Post.count()
 	let query = Post.find()
 
-	count.where('_id').nin(req.user.reported)
-	query.where('_id').nin(req.user.reported)
-
 	count.where('user').nin(req.user.blocked)
 	query.where('user').nin(req.user.blocked)
+
+	count.where('_id').nin(req.user.hidden)
+	query.where('_id').nin(req.user.hidden)
+
+	count.where('_id').nin(req.user.reported)
+	query.where('_id').nin(req.user.reported)
 
 	if (req.query.tag) {
 		count.where('tag').eq(req.query.tag)
@@ -152,6 +156,87 @@ router.post('/:id/heart', auth.user, (req, res, next) => {
 				})
 			})
 		})
+})
+
+router.post('/:id/hide', auth.user, (req, res, next) => {
+	Post.findById(req.params.id)
+		.then(post => {
+			if (!post) {
+				return next()
+			}
+
+			if (post.user.equals(req.user._id)) {
+				let err = new Error(`You can't hide your own post`)
+				err.status = 400
+
+				return next(err)
+			}
+
+			if (req.user.hidden.indexOf(post._id) < 0) {
+				req.user.hidden.push(post._id)
+
+				req.user.markModified('hidden')
+
+				req.user.save()
+					.then(() => {
+						res.send({
+							message: `This post is now hidden, and you won't be seeing it again`
+						})
+					})
+					.catch(err => next(err))
+			} else {
+				let err = new Error(`You've already hidden this post`)
+				err.status = 400
+
+				next(err)
+			}
+		})
+		.catch(err => next(err))
+})
+
+router.post('/:id/report', auth.user, (req, res, next) => {
+	Post.findById(req.params.id)
+		.then(post => {
+			if (!post) {
+				return next()
+			}
+
+			if (post.user.equals(req.user._id)) {
+				let err = new Error(`You can't report your own post`)
+				err.status = 400
+
+				return next(err)
+			}
+
+			if (req.user.reported.indexOf(post._id) < 0) {
+				req.user.reported.push(post._id)
+
+				req.user.markModified('reported')
+
+				req.user.save()
+					.then(() => {
+						let report = new Report()
+
+						report.user = req.user._id
+						report.post = post._id
+						report.details = req.body.details
+
+						return report.save()
+					})
+					.then(() => {
+						res.send({
+							message: `Thank you for reporting malicious activity. You won't be seeing that post again`
+						})
+					})
+					.catch(err => next(err))
+			} else {
+				let err = new Error(`You've already reported this post`)
+				err.status = 400
+
+				next(err)
+			}
+		})
+		.catch(err => next(err))
 })
 
 export default router

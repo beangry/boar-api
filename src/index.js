@@ -23,24 +23,20 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 
 import routes from './routes/index'
-import blocks from './routes/blocks'
 import comments from './routes/comments'
 import data from './routes/data'
 import notifications from './routes/notifications'
 import posts from './routes/posts'
-import reports from './routes/reports'
 import sessions from './routes/sessions'
 import suggestions from './routes/suggestions'
 import tags from './routes/tags'
 import users from './routes/users'
 
 app.use('/', routes)
-app.use('/v1/blocks', blocks)
 app.use('/v1/comments', comments)
 app.use('/v1/data', data)
 app.use('/v1/notifications', notifications)
 app.use('/v1/posts', posts)
-app.use('/v1/reports', reports)
 app.use('/v1/sessions', sessions)
 app.use('/v1/suggestions', suggestions)
 app.use('/v1/tags', tags)
