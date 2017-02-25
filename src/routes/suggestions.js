@@ -15,7 +15,11 @@ router.post('/', auth.user, (req, res, next) => {
 	suggestion.description = req.body.suggestion.description
 
 	suggestion.save()
-		.then(suggestion => json(res, 'suggestion', suggestion))
+		.then(() =>
+			res.send({
+				message: 'Thank you for your submission'
+			})
+		)
 		.catch(err => next(err))
 })
 
