@@ -2,6 +2,7 @@ import express from 'express'
 import moment from 'moment'
 
 import Post from '../models/post'
+import Tag from '../models/tag'
 import User from '../models/user'
 
 import auth from '../core/auth'
@@ -20,6 +21,31 @@ const sort = (a, b) => {
 
 	return 0
 }
+
+router.get('/tags', auth.admin, (req, res, next) => {
+	Tag.find()
+		.sort('order')
+		.select('type order')
+		.exec()
+		.then(tags => {
+			let types = []
+			let data = []
+
+			tags.forEach(tag => {
+				if (types.indexOf(tag.type) < 0) {
+					types.push(tag.type)
+
+					data.push({
+						name: tag.type,
+						order: tag.order
+					})
+				}
+			})
+
+			res.send(data)
+		})
+		.catch(err => next(err))
+})
 
 router.get('/posts', auth.admin, (req, res, next) => {
 	let criteria = moment().subtract(1, 'month').toDate()
