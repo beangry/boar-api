@@ -1,7 +1,10 @@
 import express from 'express'
 import moment from 'moment'
 
+import Comment from '../models/comment'
 import Post from '../models/post'
+import Report from '../models/report'
+import Suggestion from '../models/suggestion'
 import Tag from '../models/tag'
 import User from '../models/user'
 
@@ -21,6 +24,37 @@ const sort = (a, b) => {
 
 	return 0
 }
+
+router.get('/', auth.admin, (req, res, next) => {
+	let comment = Comment.count()
+	let post = Post.count()
+	let report = Report.count()
+	let suggestion = Suggestion.count()
+	let tag = Tag.count()
+	let user = User.count()
+
+	let promises = [
+		comment,
+		post,
+		report,
+		suggestion,
+		tag,
+		user
+	]
+
+	Promise.all(promises)
+		.then(data =>
+			res.send({
+				comments: data.shift(),
+				posts: data.shift(),
+				reports: data.shift(),
+				suggestions: data.shift(),
+				tags: data.shift(),
+				users: data.shift()
+			})
+		)
+		.catch(err => next(err))
+})
 
 router.get('/tags', auth.admin, (req, res, next) => {
 	Tag.find()
