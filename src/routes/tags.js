@@ -14,6 +14,7 @@ router.post('/', auth.admin, (req, res, next) => {
 	tag.name = req.body.tag.name
 	tag.type = req.body.tag.type
 	tag.order = req.body.tag.order
+	tag.related = req.body.tag.related
 
 	tag.save((err, tag) => {
 		if (err) {
