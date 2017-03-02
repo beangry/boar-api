@@ -50,7 +50,7 @@ router.get('/', auth.user, (req, res, next) => {
 		count.where('tag').eq(req.query.tag)
 		query.where('tag').eq(req.query.tag)
 	} else if (req.query.type === 'popular') {
-		let time = moment().subtract(24, 'hours').toDate()
+		let time = moment().subtract(1, 'month').toDate()
 
 		count.where('created').gte(time)
 		query.where('created').gte(time)
