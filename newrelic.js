@@ -2,7 +2,7 @@
 
 exports.config = {
 	app_name: ['Boar'],
-	license_key: 'bba54598278c5ac39a93de9420fd2a53d0ea4086',
+	license_key: process.env.NEW_RELIC_LICENSE_KEY,
 	logging: {
 		level: 'info'
 	}
